@@ -1,0 +1,65 @@
+<html>
+    <head>
+        <title>ArtPop!</title>
+        <script src="vendor/jquery.min.js"></script>
+        <script src="vendor/tempo.min.js"></script>
+        <script>
+            var d;
+            function shuffleArray(d){for(var c=d.length-1;c>0;c--){var b=Math.floor(Math.random()*(c+1));var a=d[c];d[c]=d[b];d[b]=a}return d};
+            var correta;
+            var checaResposta = function(resposta) {
+                if (resposta == correta) {
+                    alert("Yay!");
+                }
+                else {
+                    alert("Nay!");
+                }
+            }
+            $().ready(function () {
+                var artpop = Tempo.prepare("artpop");
+                
+                $.getJSON("painting.json", function(data) {
+                    var r = Math.floor(Math.random() * data.length)
+                    var rand = data[r];
+                    var names = [rand.year];
+                    data.splice(r, 1);
+
+                    var choices = 2;
+                    for (var i=0;i<choices;i++) {
+                        names.push(data[Math.floor(Math.random() * data.length)].year);
+                    }
+                    shuffleArray(names)
+                    correta = names.indexOf(rand.year)
+                    var arte = {
+                        "image" : rand.image,
+                        "names" : names
+                    }
+
+                    artpop.render(arte);
+                    for (var i=0;i<names.length;i++) {
+                        $("#artpop div").append("<button onclick='checaResposta("+i+");'>"+names[i]+"</button>")
+                    }          
+                });
+            });
+        </script>
+        <style>
+            button {
+                display:block;
+                clear:both;
+            }
+            img {
+                height:460px;
+            }
+        </style>
+    </head>
+    <body>
+        <h1>ArtPop!</h1>
+        <div class="container">
+            <div id="artpop">
+                <div data-template>
+                    <img src="{{image}}">
+                </div>
+            </div>
+        </div>
+    </body>
+</html>
