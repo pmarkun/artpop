@@ -21,15 +21,15 @@
                 $.getJSON("painting.json", function(data) {
                     var r = Math.floor(Math.random() * data.length)
                     var rand = data[r];
-                    var names = [rand.year];
+                    var names = [rand.name];
                     data.splice(r, 1);
 
                     var choices = 2;
                     for (var i=0;i<choices;i++) {
-                        names.push(data[Math.floor(Math.random() * data.length)].year);
+                        names.push(data[Math.floor(Math.random() * data.length)].name);
                     }
                     shuffleArray(names)
-                    correta = names.indexOf(rand.year)
+                    correta = names.indexOf(rand.name)
                     var arte = {
                         "image" : rand.image,
                         "names" : names
